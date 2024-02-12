@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c5f4136-cb8b-4a5b-a2ef-4f6590ed0aac" name="Changes" comment="added live camera view">
+    <list default="true" id="2c5f4136-cb8b-4a5b-a2ef-4f6590ed0aac" name="Changes" comment="- added resolution selection (not many resolutions available for now)&#10;- removed redundant method(s)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/mainClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mainClass.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,7 +89,7 @@
       <workItem from="1707504518018" duration="684000" />
       <workItem from="1707555937824" duration="4220000" />
       <workItem from="1707599599311" duration="683000" />
-      <workItem from="1707695903245" duration="10303000" />
+      <workItem from="1707695903245" duration="10349000" />
     </task>
     <task id="LOCAL-00001" summary="added split panel panes for directory, main view, footer, and camera settings">
       <option name="closed" value="true" />
@@ -108,7 +107,15 @@
       <option name="project" value="LOCAL" />
       <updated>1707700983100</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="- added resolution selection (not many resolutions available for now)&#10;- removed redundant method(s)">
+      <option name="closed" value="true" />
+      <created>1707708898096</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1707708898096</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -128,7 +135,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added split panel panes for directory, main view, footer, and camera settings" />
     <MESSAGE value="added live camera view" />
-    <option name="LAST_COMMIT_MESSAGE" value="added live camera view" />
+    <MESSAGE value="- added resolution selection (not many resolutions available for now)&#10;- removed redundant method(s)" />
+    <option name="LAST_COMMIT_MESSAGE" value="- added resolution selection (not many resolutions available for now)&#10;- removed redundant method(s)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
