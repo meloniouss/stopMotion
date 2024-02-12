@@ -11,29 +11,50 @@ import com.github.sarxos.webcam.WebcamResolution;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 public class mainClass {
 
     static Webcam webcam;
-
+    static JComboBox<Dimension> camRes;
+    static WebcamPanel webcamPanel;
+    static JPanel mainPanel;
     public static void main(String[] args)
     {
+        camRes = new JComboBox<>();
+        camRes.addItem(new Dimension(640,480));
+        camRes.addItem(new Dimension(176,144));
+        camRes.addItem(new Dimension(320,240));
         initializeWebcam();
         displayGUI();
-        displayWebcamFeed();
     }
 
     private static void initializeWebcam()
     {
         try {
-            webcam = Webcam.getDefault();
-            if (webcam != null) {
-                webcam.setViewSize(WebcamResolution.VGA.getSize());
-            } else {
+        webcam = Webcam.getDefault();
+        if (webcam != null) {
+            Dimension selectedRes = (Dimension) camRes.getSelectedItem();
+            webcam.setViewSize(selectedRes);
+            openWebcam();
+        }
+        else
+            {
                 System.out.println("No webcam found");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+    catch (Exception e)
+    {
+            e.printStackTrace();
+    }
+        Dimension[] nonStandardResolutions = new Dimension[] {
+                WebcamResolution.PAL.getSize(),
+                WebcamResolution.HD.getSize(),
+                new Dimension(2000, 1000),
+                new Dimension(1000, 500),
+        };
+        webcam.setCustomViewSizes(nonStandardResolutions);
     }
 
     private static void displayGUI()
@@ -51,22 +72,34 @@ public class mainClass {
         cameraSettingsLabel.setHorizontalAlignment(4);
 
         //webcam panel stuff
-            WebcamPanel webcamPanel = new WebcamPanel(webcam);
+            webcamPanel = new WebcamPanel(webcam);
             webcamPanel.setFPSDisplayed(true);
             webcamPanel.setDisplayDebugInfo(true);
             webcamPanel.setImageSizeDisplayed(true);
             webcamPanel.setMirrored(true);
-
-
-
+        // this combobox is used to select the user resolution
+        JPanel resPanel = new JPanel();
+        camRes.addItem(new Dimension(2000,1000));
+        camRes.addItem(new Dimension(1152,648));
+        camRes.addItem(new Dimension(1280,720));
+        camRes.addItem(new Dimension(1366,768));
+        camRes.addItem(new Dimension(1600,900));
+        camRes.addItem(new Dimension(1920,1080));
+        resPanel.add(new JLabel("Select Resolution:"));
+        resPanel.add(camRes);
 
         JPanel dirPanel = createPanel("DIRECTORY", "", Color.BLUE);
-
         JPanel settPanel = createPanel("Section 2", "CAMERA SETTINGS", Color.RED);
-
-        JPanel mainPanel = createPanel("","",Color.DARK_GRAY);
+        mainPanel = createPanel("","",Color.DARK_GRAY);
         mainPanel.add(webcamPanel);
+        mainPanel.add(resPanel);
 
+        camRes.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setResolution();
+            }
+        });
 
         //SWITCH THIS TO webcamPanel using more types from the github library
 
@@ -125,24 +158,61 @@ public class mainClass {
         return panel;
     }
 
-    private static void displayWebcamFeed() {   // unsure if this method will be necessary once we add more packages from the github
-        Timer timer = new Timer(100, e -> {
-            BufferedImage image = webcam.getImage();
-            ImageIcon icon = new ImageIcon(image.getScaledInstance(640, 480, Image.SCALE_SMOOTH));
 
-        });
-        timer.start();
-    }
 
-    private static void isActive(Webcam cam, JFrame windowFrame)
-    {
-        if (webcam == null)
-        {
+    private static void isActive(Webcam cam, JFrame windowFrame) {      // this method is redundant?
+        if (webcam == null) {
             JOptionPane.showMessageDialog(windowFrame, "WEBCAM NOT FOUND");
         }
+    }
 
+    private static void setResolution() {
+        try {
+            closeWebcam();
+            Dimension selectedRes = (Dimension) camRes.getSelectedItem();
+            webcam.setViewSize(selectedRes);
+            System.out.println("Webcam resolution updated: " + selectedRes.width + "x" + selectedRes.height);
+            openWebcam();
+
+            updateWebcamPanel(mainPanel);
+            System.out.println("panel updated");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void closeWebcam() {
+        if (webcam != null && webcam.isOpen()) {
+            webcam.close();
+            System.out.println("webcam closed");
+        }
+    }
+
+    private static void openWebcam() {
+        if (webcam != null) {
+            webcam.open();
+            System.out.println("webcam opened"); // for debug purposes
+        } else {
+            System.out.println("No webcam found");
+        }
+    }
+    private static void updateWebcamPanel(JPanel mainPanel) {
+        // Remove the existing webcamPanel from the mainPanel
+        mainPanel.remove(webcamPanel);
+        // Create a new webcamPanel with the updated webcam resolution
+        webcamPanel = new WebcamPanel(webcam);
+        webcamPanel.setFPSDisplayed(true);
+        webcamPanel.setDisplayDebugInfo(true);
+        webcamPanel.setImageSizeDisplayed(true);
+        webcamPanel.setMirrored(true);
+        // Add the new webcamPanel to the mainPanel
+        mainPanel.add(webcamPanel);
+        // Repaint the mainPanel to reflect the changes
+        mainPanel.revalidate();
+        mainPanel.repaint();
     }
 
     //add a method which takes the previous image taken from an arraylist of captured images, and displays it on top of the live-view with a lower alpha value (lower opacity)
+
 
 }
