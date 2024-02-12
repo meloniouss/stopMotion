@@ -6,26 +6,33 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
-
-
+import com.github.sarxos.webcam.WebcamPanel;
+import com.github.sarxos.webcam.WebcamResolution;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 public class mainClass {
 
     static Webcam webcam;
-    private static JLabel webcamLabel;
 
     public static void main(String[] args)
     {
-        displayGUI();
         initializeWebcam();
+        displayGUI();
         displayWebcamFeed();
     }
 
     private static void initializeWebcam()
     {
-        webcam  = Webcam.getDefault();
-        if (webcam == null)
-        {
-            System.out.println("no webcam found");
+        try {
+            webcam = Webcam.getDefault();
+            if (webcam != null) {
+                webcam.setViewSize(WebcamResolution.VGA.getSize());
+            } else {
+                System.out.println("No webcam found");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -43,33 +50,60 @@ public class mainClass {
         directoryLabel.setHorizontalAlignment(0);
         cameraSettingsLabel.setHorizontalAlignment(4);
 
+        //webcam panel stuff
+            WebcamPanel webcamPanel = new WebcamPanel(webcam);
+            webcamPanel.setFPSDisplayed(true);
+            webcamPanel.setDisplayDebugInfo(true);
+            webcamPanel.setImageSizeDisplayed(true);
+            webcamPanel.setMirrored(true);
+
+
+
 
         JPanel dirPanel = createPanel("DIRECTORY", "", Color.BLUE);
 
         JPanel settPanel = createPanel("Section 2", "CAMERA SETTINGS", Color.RED);
 
         JPanel mainPanel = createPanel("","",Color.DARK_GRAY);
-        webcamLabel = new JLabel();
-        mainPanel.add(webcamLabel);
+        mainPanel.add(webcamPanel);
+
+
         //SWITCH THIS TO webcamPanel using more types from the github library
 
         JPanel footer = createPanel("Footer", "Footer Settings", Color.GREEN);
 
+        dirPanel.setMinimumSize(new Dimension(100,300));
+        settPanel.setMinimumSize(new Dimension(100,300));
+
         JSplitPane rightSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, mainPanel, settPanel);
-        rightSplitPane.setResizeWeight(0.5);
+        rightSplitPane.setResizeWeight(0.3);
 
         JSplitPane mainSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, dirPanel, rightSplitPane);
-        mainSplitPane.setResizeWeight(0.5);
+        mainSplitPane.setResizeWeight(0.3);
+
+
+
 
         JSplitPane mainWithFooterSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, mainSplitPane, footer);
-        mainWithFooterSplitPane.setResizeWeight(0.8);
-        //unsure about this yet mainWithFooterSplitPane.setMinimumSize(new Dimension(200, windowFrame.getHeight()));
+        mainWithFooterSplitPane.setResizeWeight(0.9);
+
+
+
 
         windowFrame.add(mainWithFooterSplitPane);
         windowFrame.setVisible(true);
 
         isActive(webcam, windowFrame);
 
+
+        windowFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                if (webcam != null && webcam.isOpen()) {
+                    webcam.close();
+                }
+            }
+        });
 
     }
 
@@ -95,7 +129,7 @@ public class mainClass {
         Timer timer = new Timer(100, e -> {
             BufferedImage image = webcam.getImage();
             ImageIcon icon = new ImageIcon(image.getScaledInstance(640, 480, Image.SCALE_SMOOTH));
-            webcamLabel.setIcon(icon);
+
         });
         timer.start();
     }
