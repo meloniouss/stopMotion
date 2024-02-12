@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c5f4136-cb8b-4a5b-a2ef-4f6590ed0aac" name="Changes" comment="added split panel panes for directory, main view, footer, and camera settings">
+    <list default="true" id="2c5f4136-cb8b-4a5b-a2ef-4f6590ed0aac" name="Changes" comment="added live camera view">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/mainClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/mainClass.java" afterDir="false" />
     </list>
@@ -22,6 +22,20 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "meloniouss"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="363a4a87-0c80-44ef-a6aa-513330924e9e" />
+        <option name="url" value="https://github.com/meloniouss/stopMotion.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
@@ -76,7 +90,7 @@
       <workItem from="1707504518018" duration="684000" />
       <workItem from="1707555937824" duration="4220000" />
       <workItem from="1707599599311" duration="683000" />
-      <workItem from="1707695903245" duration="3559000" />
+      <workItem from="1707695903245" duration="10303000" />
     </task>
     <task id="LOCAL-00001" summary="added split panel panes for directory, main view, footer, and camera settings">
       <option name="closed" value="true" />
@@ -86,7 +100,15 @@
       <option name="project" value="LOCAL" />
       <updated>1707560108517</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="added live camera view">
+      <option name="closed" value="true" />
+      <created>1707700983100</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1707700983100</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -105,7 +127,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="added split panel panes for directory, main view, footer, and camera settings" />
-    <option name="LAST_COMMIT_MESSAGE" value="added split panel panes for directory, main view, footer, and camera settings" />
+    <MESSAGE value="added live camera view" />
+    <option name="LAST_COMMIT_MESSAGE" value="added live camera view" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
