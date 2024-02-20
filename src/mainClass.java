@@ -13,6 +13,8 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Array;
+import java.util.ArrayList;
 
 public class mainClass {
 
@@ -20,14 +22,17 @@ public class mainClass {
     static JComboBox<Dimension> camRes;
     static WebcamPanel webcamPanel;
     static JPanel mainPanel;
+    static ArrayList<BufferedImage> picsTaken = new ArrayList<>();
+
     public static void main(String[] args)
     {
-        camRes = new JComboBox<>();
+        camRes = new JComboBox<>();                             //refactor this, this shouldnt be in main
         camRes.addItem(new Dimension(640,480));
         camRes.addItem(new Dimension(176,144));
         camRes.addItem(new Dimension(320,240));
         initializeWebcam();
         displayGUI();
+
     }
 
     private static void initializeWebcam()
@@ -46,9 +51,9 @@ public class mainClass {
         }
     catch (Exception e)
     {
-            e.printStackTrace();
+            e.printStackTrace();    //change this, this is horrible
     }
-        Dimension[] nonStandardResolutions = new Dimension[] {
+        Dimension[] nonStandardResolutions = new Dimension[] { //refactor this, this is horrible
                 WebcamResolution.PAL.getSize(),
                 WebcamResolution.HD.getSize(),
                 new Dimension(2000, 1000),
@@ -88,9 +93,9 @@ public class mainClass {
         resPanel.add(new JLabel("Select Resolution:"));
         resPanel.add(camRes);
 
-        JPanel dirPanel = createPanel("DIRECTORY", "", Color.BLUE);
-        JPanel settPanel = createPanel("Section 2", "CAMERA SETTINGS", Color.RED);
-        mainPanel = createPanel("","",Color.DARK_GRAY);
+        JPanel dirPanel = createPanel("DIRECTORY", "", Color.DARK_GRAY);
+        JPanel settPanel = createPanel("Section 2", "CAMERA SETTINGS", Color.DARK_GRAY);
+        mainPanel = createPanel("","",Color.LIGHT_GRAY);
         mainPanel.add(webcamPanel);
         mainPanel.add(resPanel);
 
@@ -101,7 +106,7 @@ public class mainClass {
             }
         });
 
-        //SWITCH THIS TO webcamPanel using more types from the github library
+        //SWITCH THIS TO webcamPanel using more types from the GitHub library
 
         JPanel footer = createPanel("Footer", "Footer Settings", Color.GREEN);
 
@@ -176,7 +181,7 @@ public class mainClass {
 
             updateWebcamPanel(mainPanel);
             System.out.println("panel updated");
-        } catch (Exception e) {
+        } catch (Exception e) { // CHANGE THIS, THIS IS HORRIBLE
             e.printStackTrace();
         }
     }
@@ -212,7 +217,15 @@ public class mainClass {
         mainPanel.repaint();
     }
 
-    //add a method which takes the previous image taken from an arraylist of captured images, and displays it on top of the live-view with a lower alpha value (lower opacity)
+    private static void takePhoto() throws IOException {
+        BufferedImage currentPic = webcam.getImage();
+        picsTaken.add(currentPic);
+        ImageIO.write(currentPic, "jpg", new File("C:\\Users\\fireh\\Desktop\\webcamTest")); //hard coded path for now, will add file selection
+    }
+
+
+
+
 
 
 }
