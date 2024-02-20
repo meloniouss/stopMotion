@@ -1,5 +1,4 @@
 import com.github.sarxos.webcam.Webcam;
-
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +14,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Array;
 import java.util.ArrayList;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 
 public class mainClass {
 
@@ -23,16 +27,18 @@ public class mainClass {
     static WebcamPanel webcamPanel;
     static JPanel mainPanel;
     static ArrayList<BufferedImage> picsTaken = new ArrayList<>();
+    static Frame windowFrame = new Frame();
 
     public static void main(String[] args)
     {
+
         camRes = new JComboBox<>();                             //refactor this, this shouldnt be in main
         camRes.addItem(new Dimension(640,480));
         camRes.addItem(new Dimension(176,144));
         camRes.addItem(new Dimension(320,240));
         initializeWebcam();
         displayGUI();
-
+        frameStuff();
     }
 
     private static void initializeWebcam()
@@ -65,10 +71,6 @@ public class mainClass {
     private static void displayGUI()
     {
         //initializing the actual window
-        JFrame windowFrame = new JFrame("OPEN-MOTION");
-        windowFrame.setSize(1920, 1440);
-        windowFrame.setLocationRelativeTo(null);
-        windowFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //simply adding labels and stuff here
         JLabel directoryLabel = new JLabel("DIRECTORY");
@@ -90,6 +92,8 @@ public class mainClass {
         camRes.addItem(new Dimension(1366,768));
         camRes.addItem(new Dimension(1600,900));
         camRes.addItem(new Dimension(1920,1080));
+
+
         resPanel.add(new JLabel("Select Resolution:"));
         resPanel.add(camRes);
 
@@ -125,14 +129,10 @@ public class mainClass {
         JSplitPane mainWithFooterSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, mainSplitPane, footer);
         mainWithFooterSplitPane.setResizeWeight(0.9);
 
-
-
-
         windowFrame.add(mainWithFooterSplitPane);
         windowFrame.setVisible(true);
 
         isActive(webcam, windowFrame);
-
 
         windowFrame.addWindowListener(new WindowAdapter() {
             @Override
@@ -215,13 +215,49 @@ public class mainClass {
         // Repaint the mainPanel to reflect the changes
         mainPanel.revalidate();
         mainPanel.repaint();
+        windowFrame.revalidate();
+        windowFrame.repaint();
     }
 
     private static void takePhoto() throws IOException {
         BufferedImage currentPic = webcam.getImage();
         picsTaken.add(currentPic);
-        ImageIO.write(currentPic, "jpg", new File("C:\\Users\\fireh\\Desktop\\webcamTest")); //hard coded path for now, will add file selection
+        File path = new File("C:\\Users\\fireh\\Desktop\\webcamTest"); //Hardcoded temporarily.
+        String fileName = "IMG_" + picsTaken.size() + ".jpg";
+        File outputFile = new File(path, fileName);
+
+        // Save the image to the selected directory
+        ImageIO.write(currentPic, "jpg", outputFile);
     }
+
+    private  static void frameStuff()
+    {
+        windowFrame.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    try {
+                        takePhoto();
+                    } catch (IOException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
+    }
+
+
+
 
 
 
